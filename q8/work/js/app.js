@@ -17,7 +17,7 @@ $(function () {
   function displayResult(result) {
     $(".message").remove();
 
-    if (result[0]?.items.length > 0) {
+    if (result[0]?.items?.length > 0) {
       $.each(result[0].items, function (index, item) {
         const html = `
           <li class="lists-item">
@@ -38,6 +38,19 @@ $(function () {
     }
   }
 
+  function displayError(err) {
+    $(".lists").empty();
+    $(".message").remove();
+
+    if (err.status === 0) {
+      $(".lists").before('<div class="message">正常に通信できませんでした。<br>インターネットの接続を確認してください。</div>');
+    } else if (err.status === 400) {
+      $(".lists").before('<div class="message">検索キーワードが有効ではありません。<br>1文字以上で検索して下さい。</div>');
+    } else {
+      $(".lists").before('<div class="message">予期せぬエラーが起きました。<br>再読み込みを行ってください。</div>');
+    }
+  }
+
   $(".search-btn").on("click", function () {
     const searchWord = $("#search-input").val();
 
@@ -49,24 +62,18 @@ $(function () {
       pageCount++;
     }
 
-    $.ajax({
+    const settings = {
       url: `https://ci.nii.ac.jp/books/opensearch/search?title=${searchWord}&format=json&p=${pageCount}&count=20`,
       method: "GET"
-    })
+    };
+
+    $.ajax(settings)
       .done(function (response) {
-        displayResult(response["@graph"]);
+        const result = response["@graph"];
+        displayResult(result);
       })
       .fail(function (err) {
-        $(".lists").empty();
-        $(".message").remove();
-
-        if (err.status === 0) {
-          $(".lists").before('<div class="message">正常に通信できませんでした。<br>インターネットの接続を確認してください。</div>');
-        } else if (err.status === 400) {
-          $(".lists").before('<div class="message">検索キーワードが有効ではありません。<br>1文字以上で検索して下さい。</div>');
-        } else {
-          $(".lists").before('<div class="message">予期せぬエラーが起きました。<br>再読み込みを行ってください。</div>');
-        }
+        displayError(err);
       });
   });
 
@@ -77,4 +84,5 @@ $(function () {
     $(".message").remove();
     $("#search-input").val("");
   });
+
 });

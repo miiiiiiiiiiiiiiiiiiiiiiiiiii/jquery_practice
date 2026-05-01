@@ -17,23 +17,43 @@ $(function () {
     const address = $("#address").val();
     const tel = $("#tel").val();
 
-    const subscriptionList = [];
-    $('input[name="subscription"]:checked').each(function () {
-      subscriptionList.push($(this).val());
-    });
+    console.log("名字");
+    console.log(familyName);
 
-    console.log("名字：" + familyName);
-    console.log("名前：" + givenName);
-    console.log("生年月日：" + birthday);
-    console.log("性別：" + gender);
-    console.log("職業：" + occupation);
-    console.log("アカウント名：" + accountName);
-    console.log("メールアドレス：" + email);
-    console.log("パスワード：" + password);
-    console.log("確認用パスワード：" + duplicationPassword);
-    console.log("住所：" + address);
-    console.log("電話番号：" + tel);
-    console.log("購読情報：" + subscriptionList.join(", "));
+    console.log("名前");
+    console.log(givenName);
+
+    console.log("生年月日");
+    console.log(birthday);
+
+    console.log("性別");
+    console.log(gender);
+
+    console.log("職業");
+    console.log(occupation);
+
+    console.log("アカウント名");
+    console.log(accountName);
+
+    console.log("メールアドレス");
+    console.log(email);
+
+    console.log("パスワード");
+    console.log(password);
+
+    console.log("確認用パスワード");
+    console.log(duplicationPassword);
+
+    console.log("住所");
+    console.log(address);
+
+    console.log("電話番号");
+    console.log(tel);
+
+    console.log("購読情報");
+    $('input[name="subscription"]:checked').each(function () {
+      console.log($(this).val());
+    });
 
   });
 

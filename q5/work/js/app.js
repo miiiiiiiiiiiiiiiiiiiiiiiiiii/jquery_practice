@@ -1,11 +1,11 @@
 $(function () {
 
-  $(".dropdwn > li").hover(
+  $(".dropdwn li").hover(
     function () {
-      $(this).children(".dropdwn_menu").stop().slideDown();
+      $(this).children("ul").stop().slideDown();
     },
     function () {
-      $(this).children(".dropdwn_menu").stop().slideUp();
+      $(this).children("ul").stop().slideUp();
     }
   );
 
