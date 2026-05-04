@@ -10,15 +10,16 @@
 //   displayError(err)
 // });
 
-$(function () {
-  let pageCount = 1;
-  let beforeSearchWord = "";
+$(function () { // 読み込み後に処理を実行
+  let pageCount = 1; // ページ番号を管理
+  let beforeSearchWord = ""; // 前回の検索ワードを保存
 
-  function displayResult(result) {
-    $(".message").remove();
+  function displayResult(result) { // 検索結果を表示
+    $(".message").remove(); // メッセージを削除
 
-    if (result[0]?.items?.length > 0) {
-      $.each(result[0].items, function (index, item) {
+    if (result[0]?.items?.length > 0) { // 結果がある場合
+      $.each(result[0].items, function (index, item) { // 結果を1件ずつ処理
+        // 表示するHTMLを作成
         const html = `
           <li class="lists-item">
             <div class="list-inner">
@@ -29,60 +30,58 @@ $(function () {
             </div>
           </li>
         `;
-        $(".lists").prepend(html);
+        $(".lists").prepend(html); // リストに追加
       });
-    } else {
+    } else { // 結果がない場合
       $(".lists").before(
-        '<div class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</div>'
+        '<div class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</div>' // メッセージを表示
       );
     }
   }
 
-  function displayError(err) {
-    $(".lists").empty();
-    $(".message").remove();
+  function displayError(err) { // エラーを表示
+    $(".lists").empty(); // リストを空にする
+    $(".message").remove(); // メッセージを削除
 
-    if (err.status === 0) {
+    if (err.status === 0) { // 通信できない場合
       $(".lists").before('<div class="message">正常に通信できませんでした。<br>インターネットの接続を確認してください。</div>');
-    } else if (err.status === 400) {
-      $(".lists").before('<div class="message">検索キーワードが有効ではありません。<br>1文字以上で検索して下さい。</div>');
-    } else {
+    } else { // その他のエラー
       $(".lists").before('<div class="message">予期せぬエラーが起きました。<br>再読み込みを行ってください。</div>');
     }
   }
 
-  $(".search-btn").on("click", function () {
-    const searchWord = $("#search-input").val();
+  $(".search-btn").on("click", function () { // 検索ボタンをクリックした時
+    const searchWord = $("#search-input").val(); // 入力値を取得
 
-    if (searchWord !== beforeSearchWord) {
-      pageCount = 1;
-      $(".lists").empty();
-      beforeSearchWord = searchWord;
-    } else {
-      pageCount++;
+    if (searchWord !== beforeSearchWord) { // 前回と違う検索ワードの場合
+      pageCount = 1; // 1ページ目に戻す
+      $(".lists").empty(); // リストを空にする
+      beforeSearchWord = searchWord; // 検索ワードを保存
+    } else { // 前回と同じ検索ワードの場合
+      pageCount++; // 次のページにする
     }
 
-    const settings = {
-      url: `https://ci.nii.ac.jp/books/opensearch/search?title=${searchWord}&format=json&p=${pageCount}&count=20`,
-      method: "GET"
+    const settings = { // Ajaxの設定
+      url: `https://ci.nii.ac.jp/books/opensearch/search?title=${searchWord}&format=json&p=${pageCount}&count=20`, // APIのURL
+      method: "GET" // GETで取得
     };
 
-    $.ajax(settings)
-      .done(function (response) {
-        const result = response["@graph"];
-        displayResult(result);
+    $.ajax(settings) // Ajaxを実行
+      .done(function (response) { // 成功した時
+        const result = response["@graph"]; // 結果を取得
+        displayResult(result); // 検索結果を表示
       })
-      .fail(function (err) {
-        displayError(err);
+      .fail(function (err) { // 失敗した時
+        displayError(err); // エラーを表示
       });
   });
 
-  $(".reset-btn").on("click", function () {
-    pageCount = 1;
-    beforeSearchWord = "";
-    $(".lists").empty();
-    $(".message").remove();
-    $("#search-input").val("");
+  $(".reset-btn").on("click", function () { // リセットボタンをクリックした時
+    pageCount = 1; // ページ番号を戻す
+    beforeSearchWord = ""; // 検索ワードをリセット
+    $(".lists").empty(); // リストを空にする
+    $(".message").remove(); // メッセージを削除
+    $("#search-input").val(""); // 入力欄を空にする
   });
 
 });
