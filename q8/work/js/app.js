@@ -23,10 +23,10 @@ $(function () { // 読み込み後に処理を実行
         const html = `
           <li class="lists-item">
             <div class="list-inner">
-              <p>タイトル：${item.title ? item.title : "タイトル不明"}</p> // タイトルを表示
-              <p>作者：${item["dc:creator"] ? item["dc:creator"] : "作者不明"}</p> // 作者を表示
-              <p>出版社：${item["dc:publisher"] ? item["dc:publisher"][0] : "出版社不明"}</p> // 出版社を表示
-              <a href="${item.link["@id"]}" target="_blank">書籍情報</a> // 詳細リンク
+              <p>タイトル：${item.title ? item.title : "タイトル不明"}</p>
+              <p>作者：${item["dc:creator"] ? item["dc:creator"] : "作者不明"}</p>
+              <p>出版社：${item["dc:publisher"] ? item["dc:publisher"][0] : "出版社不明"}</p>
+              <a href="${item.link["@id"]}" target="_blank">書籍情報</a>
             </div>
           </li>
         `;
