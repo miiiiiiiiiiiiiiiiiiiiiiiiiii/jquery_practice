@@ -19,7 +19,8 @@ $(function () { // 読み込み後に処理を実行
 
     if (result[0]?.items?.length > 0) { // 結果がある場合
       $.each(result[0].items, function (index, item) { // 結果を1件ずつ処理
-        const html = ` // 表示用HTMLを作成
+        // 表示用HTMLを作成
+        const html = `
           <li class="lists-item">
             <div class="list-inner">
               <p>タイトル：${item.title ? item.title : "タイトル不明"}</p> // タイトルを表示
